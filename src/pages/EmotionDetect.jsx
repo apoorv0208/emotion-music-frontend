@@ -99,7 +99,7 @@ export default function EmotionDetect() {
       }
 
       // --- NEW: Step 1. Get Emotion from AI ---
-      const detectResponse = await fetch("https://emotion-music-backend-f06j.onrender.com/api/detect/", {
+      const detectResponse = await fetch("https://emotion-music-backend-f06j.onrender.com/api/detect", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ image: imageData }),
