@@ -78,13 +78,22 @@ export default function EmotionDetect() {
       const video = videoRef.current;
       const canvas = canvasRef.current;
 
-      canvas.width = video.videoWidth;
-      canvas.height = video.videoHeight;
+      // --- THE RAM SAVER COMPRESSION ---
+      // 1. Force the image to be super small (320px wide) instead of full HD
+      const TARGET_WIDTH = 320; 
+      const scaleFactor = TARGET_WIDTH / video.videoWidth;
+      const TARGET_HEIGHT = video.videoHeight * scaleFactor;
+
+      canvas.width = TARGET_WIDTH;
+      canvas.height = TARGET_HEIGHT;
 
       const ctx = canvas.getContext("2d");
-      ctx.drawImage(video, 0, 0);
+      // 2. Draw the shrunken image onto the canvas
+      ctx.drawImage(video, 0, 0, TARGET_WIDTH, TARGET_HEIGHT);
 
-      const imageData = canvas.toDataURL("image/jpeg");
+      // 3. Compress the JPEG quality down to 50% (0.5)
+      const imageData = canvas.toDataURL("image/jpeg", 0.5);
+      // ---------------------------------
       setCapturedImage(imageData);
 
       // Stop camera after capture
